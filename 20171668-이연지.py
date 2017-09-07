@@ -1,4 +1,4 @@
-num=input("enter a number")
+num = input("enter a number")
 
 #int(input())은..정수가 아닌걸 입력해도 정수로 만들어 버려서 뺏음
 
@@ -18,10 +18,10 @@ def fac(num):
       
       if num > 0: #양의 정수 일때
           
-        for i in range(1,num+1):
+        for i in range(1, num+1):
             start *= i
             ans = start #결과값
-        print(num,"! =",ans) #결과출력
+        print(num, "! =", ans) #결과출력
         fac(input("enter a number")) #재 입력받고 다시 함수에 넣음
       
       elif num == -1: 
