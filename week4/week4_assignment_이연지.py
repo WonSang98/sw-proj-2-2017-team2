@@ -1,5 +1,5 @@
 def fac(n):
-    #factorial
+    #factorial 함수
     if n==1 or n==0 :
         return 1
     else:
@@ -7,8 +7,8 @@ def fac(n):
 
 def com1(n,r):
     #factorial 을 이용해 조합 구하기
-    return fac(n)/fac(n-r)/fac(r)
-#이거면 끝..?
+    return fac(n)/fac(n-r)/fac(r) # n! / (n-r)! / r!
+
 
 def com2(n,r):
     #nCr = n-1Cr + n-1Cr-1을 이용한 재귀함수
@@ -26,6 +26,7 @@ while True:
     except ValueError :
         print("정수만 입력하세요")
         continue
+        
     
     if n<0 or r<0 :
         print("음수를 입력하지 말아주세요")
