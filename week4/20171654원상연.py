@@ -14,7 +14,7 @@ def combine_fac(n, m):#Combine Factorial ver
 
 def combine_rec(n, m):#Combine Recursive ver
     if m == 1 or n == m :
-        return n
+        return n/m
     elif m > n:
         return False
     else:
