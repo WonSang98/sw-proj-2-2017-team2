@@ -4,7 +4,7 @@
 #Fatorial fuction & Combine factorial ver, recursive ver
 
 def fac(n):#Fatorial Recursive
-    if n == 1:
+    if n == 1 or n == 0:
         return 1
     else:
         return n*fac(n-1)
