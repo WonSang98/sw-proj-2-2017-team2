@@ -31,3 +31,9 @@ print(com2(24,13))
 end_time2 = time.time()
 
 print(end_time2-start_time2)
+
+#result
+#2496144
+#5.14984130859375e-05
+#2496144
+#0.9442474842071533
