@@ -2,8 +2,12 @@ import pickle
 import sys
 from PyQt5.QtWidgets import (QWidget, QPushButton, 
     QHBoxLayout, QVBoxLayout, QApplication, QLabel, 
-    QComboBox, QTextEdit, QLineEdit)
-from PyQt5.QtCore import Qt
+    QComboBox, QTextEdit, QLineEdit,QMessageBox)
+from PyQt5.QtCore import Qt, pyqtSignal, QObject
+
+class Communicate(QObject):
+    closeApp = pyqtSignal()
+
 
 
 class ScoreDB(QWidget):
@@ -17,10 +21,15 @@ class ScoreDB(QWidget):
         self.showScoreDB()
         
     def initUI(self):
+        self.c = Communicate()
+        self.c.closeApp.connect(self.msgBox)
+        
         name_title = QLabel('Name')
         age_title = QLabel('Age')
         score_title = QLabel('Score')
         amount_title = QLabel('Amount')
+        #self를 인자로 주는것은 (pyqt5 menual에 나와있는데)
+        #아마도 얘가 self의 하위레벨인 위젯임을 나타내는 뜻 같음.
         key_title = QLabel('Key')
         result_title =QLabel('Result')
         #label widget들을 만듬.
@@ -108,6 +117,11 @@ class ScoreDB(QWidget):
         self.setGeometry(600, 400, 350, 300)
         self.setWindowTitle('Assignment6')
         self.show()
+    def msgBox(self):
+        reply = QMessageBox.question(self,'Message',"끌거야?",QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        
+    def error(self):
+        self.c.closeApp.emit()
 
 
     def closeEvent(self, event):
@@ -177,6 +191,7 @@ class ScoreDB(QWidget):
                     #str() 안하면 에러..
                 display += '\n'
             self.result_text.setPlainText(display)
+            self.error()
             #textEdit에 글자 쓰는 함수.
 
             
@@ -209,3 +224,5 @@ if __name__ == '__main__':
 #self.을 안붙이고 하면 창이그냥 꺼진다.
 #뭐든간에 에러가발생하면 에러이유안뜨고 그냥 창이 꺼진다..(스트링을 인트로바꾼다던지)
 
+
+#나도 예외처리 할거야..
