@@ -36,7 +36,8 @@ class ScoreDB(QWidget):
         for i in label:
             self.list.append(QLabel(i, self))
             self.list2.append(QLineEdit(self))
-            self.combo.addItem(i)
+            if i != 'Amount':
+                self.combo.addItem(i)
 
         #첫번째 박스에 위에서 저장한 리스트 배치
         hbox1 = QHBoxLayout()
