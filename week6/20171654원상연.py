@@ -180,12 +180,17 @@ class ScoreDB(QWidget):
 
     def IncClick(self):
         list = []
-        for p in range(len(self.scdb)):
-            if self.scdb[p]['Name'] == self.list2[0].text():
-                list.append(p)
+        try:
+            self.list2[3] = int(self.list2[3].text())
 
-        for i in list:
-            self.scdb[i]['Score'] += int(self.list2[3].text())
+            for p in range(len(self.scdb)):
+                if self.scdb[p]['Name'] == self.list2[0].text():
+                    list.append(p)
+
+            for i in list:
+                self.scdb[i]['Score'] += int(self.list2[3].text())
+        except ValueError:
+            pass
         self.txt.setText("")
         self.showScoreDB()
 
