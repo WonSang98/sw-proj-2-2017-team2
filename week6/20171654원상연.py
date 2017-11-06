@@ -36,7 +36,8 @@ class ScoreDB(QWidget):
         for i in label:
             self.list.append(QLabel(i, self))
             self.list2.append(QLineEdit(self))
-            self.combo.addItem(i)
+            if i != 'Amount':
+                self.combo.addItem(i)
 
         #첫번째 박스에 위에서 저장한 리스트 배치
         hbox1 = QHBoxLayout()
@@ -179,12 +180,17 @@ class ScoreDB(QWidget):
 
     def IncClick(self):
         list = []
-        for p in range(len(self.scdb)):
-            if self.scdb[p]['Name'] == self.list2[0].text():
-                list.append(p)
+        try:
+            self.list2[3] = int(self.list2[3].text())
 
-        for i in list:
-            self.scdb[i]['Score'] += int(self.list2[3].text())
+            for p in range(len(self.scdb)):
+                if self.scdb[p]['Name'] == self.list2[0].text():
+                    list.append(p)
+
+            for i in list:
+                self.scdb[i]['Score'] += int(self.list2[3].text())
+        except ValueError:
+            pass
         self.txt.setText("")
         self.showScoreDB()
 
