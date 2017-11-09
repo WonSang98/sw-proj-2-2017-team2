@@ -116,21 +116,26 @@ class Calculator(QWidget):
             self.display.setText("")
         else:
             if self.display.text() == ''and key in operator:
-            #연산기호부터 입력못하도록..
+            #operator은 연산기호가 들어있는 리스트.
+            #연산기호부터 입력못하도록함
                 pass
             
             elif self.display.text() != ''and self.display.text()[-1] in operator:
+                #가장마지막에 입력된 것이 연산기호 인 경우.. (**와 //를 제외하고, 연산기호가 연달아 입력되지 못하도록 할것임(.
                 if self.display.text()[-1] == '*' and self.display.text()[-2] != '*' and key == '*':
                     self.display.setText(self.display.text()+key)
+                    #가장마지막에 입력된 것이 *이고 *가 또 입력되었을때 이건 입력되게 함. (***는 불가능)
                 elif self.display.text()[-1] == '/' and self.display.text()[-2] != '/' and key == '/':
                     self.display.setText(self.display.text()+key)
+                    #가장 마지막에 입력된 것이 / 이고 /가 또 입력되었을때 이것도 입력되게 함. (///는 불가능)
                 elif key not in operator:
                     self.display.setText(self.display.text()+key)
+                    #연산기호가 아닌, 숫자들은 마음껏 입력되게함.
                 else:
                     pass
+                    #나머지 경우는 위를 제외하고 연산기호가 연달아 눌린 경우이므로 눌리지 않게함.
                 
-            #연달아 연산기호가 입력되지 않도록..
-            #하지만 ** 와 //는 눌리도록 허용
+        
             #self.display.text()가 비어있을때 인덱스[-1]는 에러나서 저렇게 써줌
                 
             #더 간단하게 조건문 만들 수 있는것 같은데..모르겠다..
