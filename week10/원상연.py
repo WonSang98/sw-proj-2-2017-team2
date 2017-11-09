@@ -6,7 +6,6 @@ from PyQt5.QtWidgets import QLayout, QGridLayout
 
 
 class Button(QToolButton):
-
     def __init__(self, text):
         super().__init__()
         self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
@@ -20,10 +19,9 @@ class Button(QToolButton):
 
 
 class Calculator(QWidget):
-    
     def __init__(self, parent=None):
         super().__init__(parent)
-        
+
         # Display Window
         self.display = QLineEdit()
         self.display.setReadOnly(True)
@@ -52,8 +50,8 @@ class Calculator(QWidget):
 
         j = 0
         for i in range(len(numbers)):
-            numLayout.addWidget(self.digitButton[i], j, i%3)
-            j = j + 1 if (i+1)%3 == 0 else j + 0
+            numLayout.addWidget(self.digitButton[i], j, i % 3)
+            j = j + 1 if (i + 1) % 3 == 0 else j + 0
 
         numLayout.addWidget(self.optionButton[7], 3, 1)
         numLayout.addWidget(self.optionButton[8], 3, 2)
@@ -64,35 +62,41 @@ class Calculator(QWidget):
 
         j = 0
         for i in range(7):
-            opLayout.addWidget(self.optionButton[i], j, i%2)
-            j = j + 1 if (i+1)%2 == 0 else j + 0
+            opLayout.addWidget(self.optionButton[i], j, i % 2)
+            j = j + 1 if (i + 1) % 2 == 0 else j + 0
 
         mainLayout.addLayout(opLayout, 1, 1)
 
         self.setLayout(mainLayout)
-        
+
         self.setWindowTitle("My Calculator")
 
-        #ButtonClicked Event
+        # ButtonClicked Event
         for i in range(10):
             self.digitButton[i].clicked.connect(self.ButtonClicked)
         for j in range(len(options)):
             self.optionButton[j].clicked.connect(self.ButtonClicked)
 
-
-
     def ButtonClicked(self):
         sender = self.sender()
         button = sender.text()
-        if button != '=' and button != 'C':
-            self.txt += button
-            self.display.setText(self.txt)
+        oper = ['+', '-', '*', '/']
+        if len(self.txt2) > 1 and self.txt == '':
+            if button in oper:
+                self.txt += button
+            else:
+                self.display.setText("error")
 
-        elif button == "=":
+        else:
+            if button != '=' and button != 'C':
+                self.txt += button
+                self.display.setText(self.txt)
+
+        if button == "=":
 
             try:
-                self.txt2 = str((eval(self.txt2+self.txt)))
-            except :
+                self.txt2 = str((eval(self.txt2 + self.txt)))
+            except:
                 self.display.setText("")
             else:
                 self.display.setText(self.txt2)
@@ -103,13 +107,10 @@ class Calculator(QWidget):
             self.display.setText(self.txt)
 
 
-
 if __name__ == '__main__':
-
     import sys
 
     app = QApplication(sys.argv)
     calc = Calculator()
     calc.show()
     sys.exit(app.exec_())
-
