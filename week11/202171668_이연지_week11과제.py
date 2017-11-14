@@ -147,11 +147,16 @@ class Calculator(QWidget):
                     pass
                  else:
                     self.display.setText(txt + key)
-        elif key == "(" or key ==")":
-            self.display.setText(txt + key)
+        elif key == "(":
+            if (txt == '') or (txt[-1] in operator and txt[-1] != '.'):
+                self.display.setText(txt + key)
+        elif key == ")":
+            if "(" in txt and len(txt) != 1 and txt[-1] not in operator:
+            #if txt != "" and txt[-1] in numbers:
+                self.display.setText(txt + key)
+        
 
 if __name__ == '__main__':
-
     import sys
 
     app = QApplication(sys.argv)
