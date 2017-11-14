@@ -148,10 +148,12 @@ class Calculator(QWidget):
                  else:
                     self.display.setText(txt + key)
         elif key == "(":
+            #앞에 아무것도 없거나 앞에 연산기호 있을때 (단, .은 안돼)
             if (txt == '') or (txt[-1] in operator and txt[-1] != '.'):
                 self.display.setText(txt + key)
         elif key == ")":
             if "(" in txt and len(txt) != 1 and txt[-1] not in operator:
+            #앞에 ( 가 있어야하고 () 안돼고 앞에 연산기호 있어야하고..
             #if txt != "" and txt[-1] in numbers:
                 self.display.setText(txt + key)
         
