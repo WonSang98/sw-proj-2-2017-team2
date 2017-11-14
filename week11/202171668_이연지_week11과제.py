@@ -7,8 +7,6 @@ from PyQt5.QtWidgets import QLayout, QGridLayout
 from keypad2 import numPadList, operatorList, constantList, functionList
 from calcFunctions import factorial, decToBin, binToDec
 
-#이전코드와의 차이점. 버튼이 커짐!!!!
-#버튼클래스 따로 안만들었다면 버튼의 사이즈 각각 바꾸고싶으면..노답..
 
 #일률적으로 버튼에 다른 효과도 줄수있어 ..이렇게하면 ´ ▽ ` )ﾉ
 
@@ -18,14 +16,10 @@ class Button(QToolButton):
     def __init__(self, text, callback):
         super().__init__()
         self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
-        #버튼의 크기를 크게만듬..밑에 sizeHint가지고 한거
-        # 아직 모르는걸로 하자..(￣□￣)
         self.setText(text)#버튼의 얼굴이 text
         self.clicked.connect(callback)
-        #callback에는 buttonClicked가 주어질것임. 버튼눌리면 buttonCLicked호출
 
     def sizeHint(self):
-        #원래 QTool버튼에 있던 함수.. 를 오버라이드 한거임
         size = super(Button, self).sizeHint()
         size.setHeight(size.height() + 25)
         size.setWidth(max(size.width(), size.height()))
@@ -43,7 +37,6 @@ class Calculator(QWidget):
         self.display.setReadOnly(True)
         self.display.setAlignment(Qt.AlignRight)
         self.display.setMaxLength(25)
-        #조금 늘려서
 
         numLayout = QGridLayout()
         opLayout = QGridLayout()
@@ -92,11 +85,14 @@ class Calculator(QWidget):
         self.setLayout(mainLayout)
         
         self.setWindowTitle("My Calculator")
+        self.equalPressed = False
         
     def buttonClicked(self):
         button =self.sender()
         key = button.text() #눌린버튼이름
+        txt = self.display.text()
         operator = ['*', '+', '-', '/', '.']
+        numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 
         if self.display.text() == 'error':
             self.display.setText('')
@@ -106,44 +102,53 @@ class Calculator(QWidget):
         # = 눌리면 창에입력된 연산 실행하고 결과창에표시
             try:
             #예외처리..
-                result = str(eval(self.display.text()))
+                result = str(eval(txt))
                 self.display.setText(result)
+                self.equalPressed = True
             except:
                 self.display.setText('error')
         
         elif key == 'C':
             self.display.setText("")
+            self.equalPressed = False
             
         elif key in functionList:
             #함수 버튼 입력 했을때
-            n = self.display.text()
+            n = txt
             self.display.setText(self.functiondic[key](n))
-
+            #함수명은 사전에 키, 함수는 키값
         elif key in constantList:
-            self.display.setText(self.display.text()+str(self.constantdic[key]))
-
-        else:
-            if self.display.text() == ''and key in operator:
-            #연산기호부터 입력못하도록 예외처리.
+            self.display.setText(txt+str(self.constantdic[key]))
+        elif key in operator:
+            if txt == '':
+            #처음부터 연산기호를 입력하지 못하도록함
                 pass
-            
-            elif self.display.text() != ''and self.display.text()[-1] in operator:
-                if self.display.text()[-1] == '*' and self.display.text()[-2] != '*' and key == '*':
-                    self.display.setText(self.display.text()+key)
-                elif self.display.text()[-1] == '/' and self.display.text()[-2] != '/' and key == '/':
-                    self.display.setText(self.display.text()+key)
-                elif key not in operator:
-                    self.display.setText(self.display.text()+key)
+
+            elif txt[-1] in operator:
+                #연산기호를 두번연속 누르려 할떄..
+
+                if txt[-1] in ['*', '/'] and txt[-2] != txt[-1] and key == txt[-1]:
+                    self.display.setText(txt + key)
+                    #두 조건문을 하나의 조건문으로 줄임
+                    #*와 /만 2번연속으로 입력되는것을 허용함. (3번은불가능)
+
                 else:
                     pass
-                
-            #**랑 //제외하고, 연속으로 연산기호가 입력되지 않도록 예외처리
-            #self.display.text()가 비어있을때 인덱스[-1]는 에러남!..
-
+                    #위에있는 case들을 제외하고 연산기호가 연달아 눌린 경우는 안되게함.
             
             else:
-                self.display.setText(self.display.text()+key)
-
+                self.display.setText(txt + key)
+                self.equalPressed = False
+                #여기서 False로 변경해줘야..한번 = 를 누른 뒤, 연산기호입력 후 숫자를 2개이상 쓸수있음
+                #비어있지도 않고 연속도 아니면 연산기호를 누를수 있음.
+        elif key in numbers:
+                 if self.equalPressed == True:
+                    # '=' 이 눌렸다면, 연산기호 부터 입력해야함
+                    pass
+                 else:
+                    self.display.setText(txt + key)
+        elif key == "(" or key ==")":
+            self.display.setText(txt + key)
 
 if __name__ == '__main__':
 
