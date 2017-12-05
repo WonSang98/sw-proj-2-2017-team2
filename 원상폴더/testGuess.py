@@ -23,6 +23,8 @@ class TestGuess(unittest.TestCase):
         self.assertEqual(self.g1.guessedChars, {'', 'q', 'e', 'n'})
         self.assertEqual(self.g1.guess('D'), True)
         self.assertEqual(self.g1.currentStatus, 'de_____')
+        self.assertEqual(self.g1.guess('a'), True)
+        self.assertEqual(self.g1.currentStatus, 'de_a___')
 
 
     #정답을 맞췄을 때와 아닐 때 리턴값확인
